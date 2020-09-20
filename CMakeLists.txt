@@ -1,4 +1,4 @@
-PROJECT                (PackageTempName)
+PROJECT                (Touch)
 CMAKE_MINIMUM_REQUIRED (VERSION 3.16)
 
 SET (ProjectName            Project)
@@ -6,7 +6,7 @@ SET (TestsName              Tests)
 SET (LibraryName            ${CMAKE_PROJECT_NAME}Lib)
 SET (CurrentPath            ${CMAKE_CURRENT_SOURCE_DIR})
 SET (PackagesPropertiesPath "")
-SET (PackagesNames          PackagesTempNames)
+SET (PackagesNames          )
 
 MACRO (LOG_ERROR msg)
     EXECUTE_PROCESS (COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --red --bold ${msg})
