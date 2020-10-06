@@ -95,7 +95,7 @@ TEST_F (TouchFixture, CheckIfDipslayIsPressed)
     pressedCoordinates.X = TWENTY;
     pressedCoordinates.Y = TWENTY;
 
-    EXPECT_CALL (TouchMock, isTouched ()).WillRepeatedly (Return (true));
+    EXPECT_CALL (TouchMock, isTouched      ()).WillRepeatedly (Return (true));
     EXPECT_CALL (TouchMock, getCoordinates ()).WillRepeatedly (Return (pressedCoordinates));
 
     Touch::EState state = Touch::EState::eUntouched;
