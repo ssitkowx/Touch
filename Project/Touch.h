@@ -13,6 +13,19 @@
 class Touch
 {
     public:
+        enum class EState : uint8_t
+        {
+            ePressed,
+            eReleased,
+            eUntouched
+        };
+
+        struct Coordinates
+        {
+            uint16_t X;
+            uint16_t Y;
+        };
+
         struct Configuration
         {
             uint8_t Histeresis;
@@ -31,28 +44,13 @@ class Touch
         bool         IsReleased (void) { return (event () == EState::eReleased) ? true : false; }
 
     protected:
-        struct Coordinates
-        {
-            uint16_t X;
-            uint16_t Y;
-        };
-
         const Configuration config;
-        Coordinates         coordinates;
+        Coordinates         coordinates = { ZERO, ZERO };
 
         virtual bool        isTouched      (void)          = 0;
         virtual Coordinates getCoordinates (void)          = 0;
         virtual uint16_t    getPos         (uint8_t v_cmd) = 0;
-
-    private:
-        enum class EState : uint8_t
-        {
-            ePressed,
-            eReleased,
-            eNeither
-        };
-
-        EState event (void);
+        EState              event          (void);
 };
 
 ///////////////////////////////////////////////////////////////////////////////

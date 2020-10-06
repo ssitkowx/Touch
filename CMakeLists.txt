@@ -6,7 +6,7 @@ SET (TestsName              Tests)
 SET (LibraryName            ${CMAKE_PROJECT_NAME}Lib)
 SET (CurrentPath            ${CMAKE_CURRENT_SOURCE_DIR})
 SET (PackagesPropertiesPath "")
-SET (PackagesNames          Utils)
+SET (PackagesNames          Utils Logger LoggerMock)
 
 MACRO (LOG_ERROR msg)
     EXECUTE_PROCESS (COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --red --bold ${msg})
@@ -82,6 +82,13 @@ GET_PACKAGES_PROPERTY (PackageName        PackageLibsNames)
 
 SET          (BuildPath ${CurrentPath}/Build)
 REMOVE_FILES ("${BuildPath}")
+
+SOURCE_GROUP               (TREE                              ${ProjectIncludePath} PREFIX "" FILES ${ProjectFilesAndFolders})
+LINK_DIRECTORIES           (${ProjectName}                    ${PackageLibsPaths})
+ADD_EXECUTABLE             (${ProjectName}                    ${ProjectFilesAndFolders})
+TARGET_INCLUDE_DIRECTORIES (${ProjectName} PUBLIC             ${ProjectPathsLists} ${PackageIncludesPaths})
+TARGET_LINK_LIBRARIES      (${ProjectName}                    ${CONAN_LIBS_GTEST} ${PackageLibsNames})
+TARGET_COMPILE_FEATURES    (${ProjectName} PUBLIC cxx_std_17)
 
 SOURCE_GROUP               (TREE                              ${TestIncludePath} PREFIX "" FILES ${TestFilesAndFolders})
 LINK_DIRECTORIES           (${TestsName}                      ${BuildPath}/lib ${PackageLibsPaths})

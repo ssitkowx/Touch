@@ -11,7 +11,7 @@
 
 Touch::EState Touch::event (void)
 {
-    static EState state = EState::eNeither;
+    static EState state = EState::eUntouched;
     if (isTouched () == true)
     {
         static bool    isPressed = false;
@@ -30,9 +30,9 @@ Touch::EState Touch::event (void)
                     timePressed = ZERO;
                     state       = EState::ePressed;
                 }
-                else { state = EState::eNeither; }
+                else { state = EState::eUntouched; }
             }
-            else { state = EState::eNeither; }
+            else { state = EState::eUntouched; }
 
             timeReleased = ZERO;
         }
@@ -46,9 +46,9 @@ Touch::EState Touch::event (void)
                     timeReleased = ZERO;
                     state        = EState::eReleased;
                 }
-                else { state = EState::eNeither; }
+                else { state = EState::eUntouched; }
             }
-            else { state = EState::eNeither; }
+            else { state = EState::eUntouched; }
 
             timePressed = ZERO;
         }
@@ -57,7 +57,7 @@ Touch::EState Touch::event (void)
         return state;
     }
 
-    return EState::eNeither;
+    return EState::eUntouched;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
