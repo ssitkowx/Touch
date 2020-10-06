@@ -18,27 +18,6 @@ using ::testing::Sequence;
 //////////////////////////////// FUNCTIONS ////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-TEST_F (TouchFixture, CheckIfDipslayIsPressed)
-{
-    LOGW (MODULE, "CheckIfDipslayIsTouched");
-
-    Touch::Coordinates pressedCoordinates;
-    pressedCoordinates.X = TWENTY;
-    pressedCoordinates.Y = TWENTY;
-
-    EXPECT_CALL (TouchMock, isTouched      ()).WillRepeatedly (Return (true));
-    EXPECT_CALL (TouchMock, getCoordinates ()).WillRepeatedly (Return (pressedCoordinates));
-    
-    Touch::EState state = Touch::EState::eUntouched;
-    for (uint8_t eventNum = ZERO; eventNum < Config.Time.PressedMax + ONE; eventNum++)
-    { 
-        ASSERT_EQ (Touch::EState::eUntouched, state);
-        state = TouchMock.event ();
-    }   
-
-    ASSERT_EQ (Touch::EState::ePressed, state);
-}
-
 Touch::Coordinates increaseCoordinates (Touch::Coordinates & v_coordinates, uint8_t v_histeresis)
 {
     v_coordinates.X = v_coordinates.X + v_histeresis + ONE;
@@ -106,6 +85,27 @@ TEST_F (TouchFixture, CheckIfDipslayIsUntouchedAfterTooShortTimePressed)
         state = TouchMock.event ();
         ASSERT_EQ (Touch::EState::eUntouched, state);
     }
+}
+
+TEST_F (TouchFixture, CheckIfDipslayIsPressed)
+{
+    LOGW (MODULE, "CheckIfDipslayIsTouched");
+
+    Touch::Coordinates pressedCoordinates;
+    pressedCoordinates.X = TWENTY;
+    pressedCoordinates.Y = TWENTY;
+
+    EXPECT_CALL (TouchMock, isTouched ()).WillRepeatedly (Return (true));
+    EXPECT_CALL (TouchMock, getCoordinates ()).WillRepeatedly (Return (pressedCoordinates));
+
+    Touch::EState state = Touch::EState::eUntouched;
+    for (uint8_t eventNum = ZERO; eventNum < Config.Time.PressedMax + ONE; eventNum++)
+    {
+        ASSERT_EQ (Touch::EState::eUntouched, state);
+        state = TouchMock.event ();
+    }
+
+    ASSERT_EQ (Touch::EState::ePressed, state);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
