@@ -18,7 +18,7 @@ Touch::EState Touch::event (void)
         static uint8_t timePressed;
         static uint8_t timeReleased;
 
-        Touch::Coordinates newCoordinates = getCoordinates ();
+        Rectangle::Coordinates newCoordinates = getCoordinates ();
         if (((coordinates.X - config.Histeresis) <= newCoordinates.X) && (newCoordinates.X <= (coordinates.X + config.Histeresis)) &&
             ((coordinates.Y - config.Histeresis) <= newCoordinates.Y) && (newCoordinates.Y <= (coordinates.Y + config.Histeresis)))
         {

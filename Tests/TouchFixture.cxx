@@ -18,7 +18,7 @@ using ::testing::Sequence;
 //////////////////////////////// FUNCTIONS ////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-Touch::Coordinates increaseCoordinates (Touch::Coordinates & v_coordinates, uint8_t v_histeresis)
+Rectangle::Coordinates increaseCoordinates (Rectangle::Coordinates & v_coordinates, uint8_t v_histeresis)
 {
     v_coordinates.X = v_coordinates.X + v_histeresis + ONE;
     v_coordinates.Y = v_coordinates.Y + v_histeresis + ONE;
@@ -29,7 +29,7 @@ TEST_F (TouchFixture, CheckIfDipslayIsReleased)
 {
     LOGW (MODULE, "CheckIfDipslayIsReleased");
 
-    Touch::Coordinates pressedCoordinates;
+    Rectangle::Coordinates pressedCoordinates;
     pressedCoordinates.X = ONE_HUNDRED;
     pressedCoordinates.Y = ONE_HUNDRED;
 
@@ -72,7 +72,7 @@ TEST_F (TouchFixture, CheckIfDipslayIsUntouchedAfterTooShortTimePressed)
 {
     LOGW (MODULE, "CheckIfDipslayIsUntouchedAfterTooShortTimePressed");
 
-    Touch::Coordinates pressedCoordinates;
+    Rectangle::Coordinates pressedCoordinates;
     pressedCoordinates.X = TWENTY;
     pressedCoordinates.Y = TWENTY;
 
@@ -91,7 +91,7 @@ TEST_F (TouchFixture, CheckIfDipslayIsPressed)
 {
     LOGW (MODULE, "CheckIfDipslayIsTouched");
 
-    Touch::Coordinates pressedCoordinates;
+    Rectangle::Coordinates pressedCoordinates;
     pressedCoordinates.X = TWENTY;
     pressedCoordinates.Y = TWENTY;
 
