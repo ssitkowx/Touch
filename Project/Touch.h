@@ -31,8 +31,6 @@ class Touch
             } Time;
         };
 
-        Rectangle::Coordinates Coordinates;
-
         explicit Touch (Configuration v_config) : config (v_config) { }
         virtual ~Touch () = default;
 
