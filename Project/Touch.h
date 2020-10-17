@@ -34,9 +34,8 @@ class Touch
         explicit Touch (Configuration v_config) : config (v_config) { }
         virtual ~Touch () = default;
 
-        virtual void Process    (void) = 0;
-        bool         IsPressed  (void) { return (event () == EState::ePressed ) ? true : false; }
-        bool         IsReleased (void) { return (event () == EState::eReleased) ? true : false; }
+        bool IsPressed  (void) { return (event () == EState::ePressed ) ? true : false; }
+        bool IsReleased (void) { return (event () == EState::eReleased) ? true : false; }
 
     protected:
         const Configuration    config;
