@@ -5,7 +5,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "Utils.h"
-#include <stdint.h>
 #include "Rectangle.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -22,7 +21,7 @@ class Touch
             eUntouched
         };
 
-        struct Configuration
+        struct Config
         {
             uint8_t Histeresis;
             struct
@@ -32,14 +31,14 @@ class Touch
             } Time;
         };
 
-        explicit Touch (Configuration v_config) : config (v_config) { }
+        explicit Touch (Config v_config) : config (v_config) { }
         virtual ~Touch () = default;
 
         bool IsPressed  (void) { return (event () == EState::ePressed ) ? true : false; }
         bool IsReleased (void) { return (event () == EState::eReleased) ? true : false; }
 
     protected:
-        const Configuration    config;
+        const Config           config;
         Rectangle::Coordinates coordinates = { ZERO, ZERO };
 
         virtual bool                   isTouched      (void)          = 0;
