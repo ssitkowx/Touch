@@ -49,23 +49,23 @@ TEST_F (TouchFixture, CheckIfDipslayIsReleased)
                                                   .WillOnce   (Return (increaseCoordinates (pressedCoordinates, Config.Histeresis)));
     }
 
-    Touch::EState state = Touch::EState::eUntouched;
+    Touch<decltype(TouchMock)>::EState state = Touch<decltype(TouchMock)>::EState::eUntouched;
     for (uint8_t eventNum = ZERO; eventNum < Config.Time.PressedMax + ONE; eventNum++)
     {
-        ASSERT_EQ (Touch::EState::eUntouched, state);
+        ASSERT_EQ (Touch<decltype(TouchMock)>::EState::eUntouched, state);
         state = TouchMock.event ();
     }
 
-    ASSERT_EQ (Touch::EState::ePressed, state);
+    ASSERT_EQ (Touch<decltype(TouchMock)>::EState::ePressed, state);
 
-    state = Touch::EState::eUntouched;
+    state = Touch<decltype(TouchMock)>::EState::eUntouched;
     for (uint8_t eventNum = ZERO; eventNum < Config.Time.ReleasedMax; eventNum++)
     {
-        ASSERT_EQ (Touch::EState::eUntouched, state);
+        ASSERT_EQ (Touch<decltype(TouchMock)>::EState::eUntouched, state);
         state = TouchMock.event ();
     }
 
-    ASSERT_EQ (Touch::EState::eReleased, state);
+    ASSERT_EQ (Touch<decltype(TouchMock)>::EState::eReleased, state);
 }
 
 TEST_F (TouchFixture, CheckIfDipslayIsUntouchedAfterTooShortTimePressed)
@@ -79,11 +79,11 @@ TEST_F (TouchFixture, CheckIfDipslayIsUntouchedAfterTooShortTimePressed)
     EXPECT_CALL (TouchMock, isTouched      ()).WillRepeatedly (Return (true));
     EXPECT_CALL (TouchMock, getCoordinates ()).WillRepeatedly (Return (pressedCoordinates));
 
-    Touch::EState state = Touch::EState::eUntouched;
+    Touch<decltype(TouchMock)>::EState state = Touch<decltype(TouchMock)>::EState::eUntouched;
     for (uint8_t eventNum = ZERO; eventNum < Config.Time.PressedMax - ONE; eventNum++)
     {
         state = TouchMock.event ();
-        ASSERT_EQ (Touch::EState::eUntouched, state);
+        ASSERT_EQ (Touch<decltype(TouchMock)>::EState::eUntouched, state);
     }
 }
 
@@ -98,14 +98,14 @@ TEST_F (TouchFixture, CheckIfDipslayIsPressed)
     EXPECT_CALL (TouchMock, isTouched      ()).WillRepeatedly (Return (true));
     EXPECT_CALL (TouchMock, getCoordinates ()).WillRepeatedly (Return (pressedCoordinates));
 
-    Touch::EState state = Touch::EState::eUntouched;
+    Touch<decltype(TouchMock)>::EState state = Touch<decltype(TouchMock)>::EState::eUntouched;
     for (uint8_t eventNum = ZERO; eventNum < Config.Time.PressedMax + ONE; eventNum++)
     {
-        ASSERT_EQ (Touch::EState::eUntouched, state);
+        ASSERT_EQ (Touch<decltype(TouchMock)>::EState::eUntouched, state);
         state = TouchMock.event ();
     }
 
-    ASSERT_EQ (Touch::EState::ePressed, state);
+    ASSERT_EQ (Touch<decltype(TouchMock)>::EState::ePressed, state);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

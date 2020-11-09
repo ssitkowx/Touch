@@ -11,8 +11,12 @@
 /////////////////////////// CLASSES/STRUCTURES ////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
+template <class DERIVED_TYPE>
 class Touch
 {
+    friend DERIVED_TYPE;
+    DERIVED_TYPE & derivedType = static_cast <DERIVED_TYPE &>(*this);
+
     public:
         enum class EState : uint8_t
         {
@@ -32,7 +36,6 @@ class Touch
         };
 
         explicit Touch (Config v_config) : config (v_config) { }
-        virtual ~Touch () = default;
 
         bool IsPressed  (void) { return (event () == EState::ePressed ) ? true : false; }
         bool IsReleased (void) { return (event () == EState::eReleased) ? true : false; }
@@ -41,10 +44,63 @@ class Touch
         const Config           config;
         Rectangle::Coordinates coordinates = { ZERO, ZERO };
 
-        virtual bool                   isTouched      (void)          = 0;
-        virtual Rectangle::Coordinates getCoordinates (void)          = 0;
-        virtual uint16_t               getPos         (uint8_t v_cmd) = 0;
-        EState                         event          (void);
+        bool                   isTouched      (void)          { return derivedType.isTouched      ();      }
+        Rectangle::Coordinates getCoordinates (void)          { return derivedType.getCoordinates ();      }
+        uint16_t               getPos         (uint8_t v_cmd) { return derivedType.getPos         (v_cmd); }
+
+        EState event (void)
+        {
+            static EState state = EState::eUntouched;
+            if (isTouched () == true)
+            {
+                static bool    isPressed = false;
+                static uint8_t timePressed;
+                static uint8_t timeReleased;
+
+                Rectangle::Coordinates newCoordinates = getCoordinates ();
+                if (((coordinates.X - config.Histeresis) <= newCoordinates.X) && (newCoordinates.X <= (coordinates.X + config.Histeresis)) &&
+                    ((coordinates.Y - config.Histeresis) <= newCoordinates.Y) && (newCoordinates.Y <= (coordinates.Y + config.Histeresis)))
+                {
+                    if (isPressed == false)
+                    {
+                        if (++timePressed == config.Time.PressedMax)
+                        {
+                            isPressed = true;
+                            timePressed = ZERO;
+                            state = EState::ePressed;
+                        }
+                        else { state = EState::eUntouched; }
+                    }
+                    else { state = EState::eUntouched; }
+
+                    timeReleased = ZERO;
+                }
+                else
+                {
+                    if (isPressed == true)
+                    {
+                        if (++timeReleased == config.Time.ReleasedMax)
+                        {
+                            isPressed = false;
+                            timeReleased = ZERO;
+                            state = EState::eReleased;
+                        }
+                        else { state = EState::eUntouched; }
+                    }
+                    else { state = EState::eUntouched; }
+
+                    timePressed = ZERO;
+                }
+
+                coordinates = newCoordinates;
+                return state;
+            }
+
+            return EState::eUntouched;
+        }
+
+    private:
+        ~Touch () = default;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

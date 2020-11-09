@@ -11,10 +11,10 @@
 /////////////////////////// CLASSES/STRUCTURES ////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-class TouchMock final : public Touch
+class TouchMock final : public Touch<TouchMock>
 {
     public:
-        TouchMock (Configuration v_config) : Touch (v_config) { }
+        TouchMock (Config v_config) : Touch (v_config) { }
 
         Touch::event;
         Touch::coordinates;
