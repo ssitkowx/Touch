@@ -37,16 +37,16 @@ class Touch
 
         explicit Touch (Config v_config) : config (v_config) { }
 
-        bool IsPressed  (void) { return (event () == EState::ePressed ) ? true : false; }
-        bool IsReleased (void) { return (event () == EState::eReleased) ? true : false; }
+        bool                   IsPressed      (void)          { return (event () == EState::ePressed ) ? true : false; }
+        bool                   IsReleased     (void)          { return (event () == EState::eReleased) ? true : false; }
+        Rectangle::Coordinates GetCoordinates (void)          { return derivedType.getCoordinates ();                  }
 
     protected:
         const Config           config;
         Rectangle::Coordinates coordinates = { ZERO, ZERO };
 
-        bool                   isTouched      (void)          { return derivedType.isTouched      ();      }
-        Rectangle::Coordinates getCoordinates (void)          { return derivedType.getCoordinates ();      }
-        uint16_t               getPos         (uint8_t v_cmd) { return derivedType.getPos         (v_cmd); }
+        bool                   isTouched      (void)          { return derivedType.isTouched ();      }
+        uint16_t               getPos         (uint8_t v_cmd) { return derivedType.getPos    (v_cmd); }
 
         EState event (void)
         {
@@ -57,7 +57,7 @@ class Touch
                 static uint8_t timePressed;
                 static uint8_t timeReleased;
 
-                Rectangle::Coordinates newCoordinates = getCoordinates ();
+                Rectangle::Coordinates newCoordinates = GetCoordinates ();
                 if (((coordinates.X - config.Histeresis) <= newCoordinates.X) && (newCoordinates.X <= (coordinates.X + config.Histeresis)) &&
                     ((coordinates.Y - config.Histeresis) <= newCoordinates.Y) && (newCoordinates.Y <= (coordinates.Y + config.Histeresis)))
                 {
