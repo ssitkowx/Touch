@@ -37,18 +37,7 @@ class Touch
 
         explicit Touch (Config v_config) : config (v_config) { }
 
-        bool                   IsPressed      (void)          { return (event () == EState::ePressed ) ? true : false; }
-        bool                   IsReleased     (void)          { return (event () == EState::eReleased) ? true : false; }
-        Rectangle::Coordinates GetCoordinates (void)          { return derivedType.getCoordinates ();                  }
-
-    protected:
-        const Config           config;
-        Rectangle::Coordinates coordinates = { ZERO, ZERO };
-
-        bool                   isTouched      (void)          { return derivedType.isTouched ();      }
-        uint16_t               getPos         (uint8_t v_cmd) { return derivedType.getPos    (v_cmd); }
-
-        EState event (void)
+        EState Event (void)
         {
             static EState state = EState::eUntouched;
             if (isTouched () == true)
@@ -98,6 +87,17 @@ class Touch
 
             return EState::eUntouched;
         }
+
+        bool                   IsPressed      (void)          { return (Event () == EState::ePressed ) ? true : false; }
+        bool                   IsReleased     (void)          { return (Event () == EState::eReleased) ? true : false; }
+        Rectangle::Coordinates GetCoordinates (void)          { return derivedType.getCoordinates ();                  }
+
+    protected:
+        const Config           config;
+        Rectangle::Coordinates coordinates = { ZERO, ZERO };
+
+        bool                   isTouched      (void)          { return derivedType.isTouched ();      }
+        uint16_t               getPos         (uint8_t v_cmd) { return derivedType.getPos    (v_cmd); }
 
     private:
         ~Touch () = default;
