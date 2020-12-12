@@ -81,9 +81,9 @@ class Touch
                     {
                         if (++timeReleased == config.Time.ReleasedMax)
                         {
-                            isPressed = false;
+                            isPressed    = false;
                             timeReleased = ZERO;
-                            state = EState::eReleased;
+                            state        = EState::eReleased;
                         }
                         else { state = EState::eUntouched; }
                     }
