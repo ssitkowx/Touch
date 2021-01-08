@@ -16,7 +16,7 @@ class TouchMock final : public Touch<TouchMock>
     public:
         TouchMock (Config v_config) : Touch (v_config) { }
 
-        Touch::event;
+        Touch::Event;
         Touch::coordinates;
 
         MOCK_METHOD0 (Process       , void                   (void));

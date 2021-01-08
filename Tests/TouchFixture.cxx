@@ -53,7 +53,7 @@ TEST_F (TouchFixture, CheckIfDipslayIsReleased)
     for (uint8_t eventNum = ZERO; eventNum < Config.Time.PressedMax + ONE; eventNum++)
     {
         ASSERT_EQ (Touch<decltype(TouchMock)>::EState::eUntouched, state);
-        state = TouchMock.event ();
+        state = TouchMock.Event ();
     }
 
     ASSERT_EQ (Touch<decltype(TouchMock)>::EState::ePressed, state);
@@ -62,7 +62,7 @@ TEST_F (TouchFixture, CheckIfDipslayIsReleased)
     for (uint8_t eventNum = ZERO; eventNum < Config.Time.ReleasedMax; eventNum++)
     {
         ASSERT_EQ (Touch<decltype(TouchMock)>::EState::eUntouched, state);
-        state = TouchMock.event ();
+        state = TouchMock.Event ();
     }
 
     ASSERT_EQ (Touch<decltype(TouchMock)>::EState::eReleased, state);
@@ -82,7 +82,7 @@ TEST_F (TouchFixture, CheckIfDipslayIsUntouchedAfterTooShortTimePressed)
     Touch<decltype(TouchMock)>::EState state = Touch<decltype(TouchMock)>::EState::eUntouched;
     for (uint8_t eventNum = ZERO; eventNum < Config.Time.PressedMax - ONE; eventNum++)
     {
-        state = TouchMock.event ();
+        state = TouchMock.Event ();
         ASSERT_EQ (Touch<decltype(TouchMock)>::EState::eUntouched, state);
     }
 }
@@ -102,7 +102,7 @@ TEST_F (TouchFixture, CheckIfDipslayIsPressed)
     for (uint8_t eventNum = ZERO; eventNum < Config.Time.PressedMax + ONE; eventNum++)
     {
         ASSERT_EQ (Touch<decltype(TouchMock)>::EState::eUntouched, state);
-        state = TouchMock.event ();
+        state = TouchMock.Event ();
     }
 
     ASSERT_EQ (Touch<decltype(TouchMock)>::EState::ePressed, state);
