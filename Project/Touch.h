@@ -5,7 +5,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "Utils.h"
-#include "Rectangle.h"
+#include "Bitmap.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 /////////////////////////// CLASSES/STRUCTURES ////////////////////////////////
@@ -46,7 +46,7 @@ class Touch
                 static uint8_t timePressed;
                 static uint8_t timeReleased;
 
-                Rectangle::Coordinates newCoordinates = GetCoordinates ();
+                Bitmap::Coordinates newCoordinates = GetCoordinates ();
                 if (((coordinates.X - config.Histeresis) <= newCoordinates.X) && (newCoordinates.X <= (coordinates.X + config.Histeresis)) &&
                     ((coordinates.Y - config.Histeresis) <= newCoordinates.Y) && (newCoordinates.Y <= (coordinates.Y + config.Histeresis)))
                 {
@@ -88,16 +88,16 @@ class Touch
             return EState::eUntouched;
         }
 
-        bool                   IsPressed      (void)          { return (Event () == EState::ePressed ) ? true : false; }
-        bool                   IsReleased     (void)          { return (Event () == EState::eReleased) ? true : false; }
-        Rectangle::Coordinates GetCoordinates (void)          { return derivedType.getCoordinates ();                  }
+        bool                IsPressed      (void)          { return (Event () == EState::ePressed ) ? true : false; }
+        bool                IsReleased     (void)          { return (Event () == EState::eReleased) ? true : false; }
+        Bitmap::Coordinates GetCoordinates (void)          { return derivedType.getCoordinates ();                  }
 
     protected:
-        const Config           config;
-        Rectangle::Coordinates coordinates = { ZERO, ZERO };
+        const Config        config;
+        Bitmap::Coordinates coordinates = { ZERO, ZERO };
 
-        bool                   isTouched      (void)          { return derivedType.isTouched ();      }
-        uint16_t               getPos         (uint8_t v_cmd) { return derivedType.getPos    (v_cmd); }
+        bool                isTouched      (void)          { return derivedType.isTouched ();      }
+        uint16_t            getPos         (uint8_t v_cmd) { return derivedType.getPos    (v_cmd); }
 
     private:
         ~Touch () = default;

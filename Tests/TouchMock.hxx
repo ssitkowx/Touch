@@ -19,10 +19,10 @@ class TouchMock final : public Touch<TouchMock>
         Touch::Event;
         Touch::coordinates;
 
-        MOCK_METHOD0 (Process       , void                   (void));
-        MOCK_METHOD0 (isTouched     , bool                   (void));
-        MOCK_METHOD0 (getCoordinates, Rectangle::Coordinates (void));
-        MOCK_METHOD1 (getPos        , uint16_t               (uint8_t));
+        MOCK_METHOD0 (Process       , void                (void));
+        MOCK_METHOD0 (isTouched     , bool                (void));
+        MOCK_METHOD0 (getCoordinates, Bitmap::Coordinates (void));
+        MOCK_METHOD1 (getPos        , uint16_t            (uint8_t));
 };
 
 ///////////////////////////////////////////////////////////////////////////////
