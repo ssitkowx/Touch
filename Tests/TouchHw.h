@@ -14,7 +14,8 @@
 class TouchHw final : public Touch<TouchHw>
 {
     public:
-        TouchHw (Config v_config) : Touch (v_config) { }
+        TouchHw (const Touch<TouchHw>::Config v_touchConfig) : Touch<TouchHw> (v_touchConfig) { }
+       ~TouchHw () = default;
 
         Touch::Event;
         Touch::coordinates;
