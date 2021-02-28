@@ -24,7 +24,7 @@ class Conan(ConanFile):
     Packages        = ["Utils/1.0@ssitkowx/stable",
                        "Bitmap/1.0@ssitkowx/stable",
                        "Logger/1.0@ssitkowx/stable", 
-                       "LoggerMock/1.0@ssitkowx/stable"]
+                       "LoggerHw/1.0@ssitkowx/stable"]
 
     def source (self):   
         ConanPackages.Install (self, self.DownloadsPath, self.repoUrl, self.Packages)

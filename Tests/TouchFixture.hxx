@@ -5,7 +5,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "Utils.h"
-#include "TouchMock.hxx"
+#include "TouchHw.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 /////////////////////////// CLASSES/STRUCTURES ////////////////////////////////
@@ -15,10 +15,10 @@ class TouchFixture : public ::testing::Test
 {
     public:
         static constexpr char * MODULE = (char *)"TouchFixture";
-        const TouchMock::Config Config = { TWO,  FOUR,  EIGHT };
-        TouchMock               TouchMock;
+        const TouchHw::Config   Config = { TWO,  FOUR,  EIGHT };
+        TouchHw                 TouchHw;
 
-        TouchFixture  () : TouchMock (Config) { }
+        TouchFixture  () : TouchHw (Config) { }
         void TestBody () override { }
         void SetUp    () override { }
         void TearDown () override { }
