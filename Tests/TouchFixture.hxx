@@ -14,11 +14,19 @@
 class TouchFixture : public ::testing::Test
 {
     public:
-        static constexpr char * MODULE = (char *)"TouchFixture";
-        const TouchHw::Config   Config = { TWO,  FOUR,  EIGHT };
-        TouchHw                 TouchHw;
+        static constexpr char *      MODULE       = (char *)"TouchFixture";
+        const TouchHw::Config        Config       = { TWO,  
+                                                      FOUR,  
+                                                      EIGHT
+                                                    };
+        const TouchHw::Coefficients  Coefficients = { ONE_HUNDRED_TWENTY_EIGHT,
+                                                      TWO,
+                                                      2.68
+                                                    };
+        SpiHw                        SpiHw;
+        TouchHw                      TouchHw;
 
-        TouchFixture  () : TouchHw (Config) { }
+        TouchFixture  () : TouchHw (Coefficients, Config, SpiHw) { }
         void TestBody () override { }
         void SetUp    () override { }
         void TearDown () override { }
