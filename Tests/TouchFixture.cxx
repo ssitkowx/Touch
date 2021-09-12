@@ -33,39 +33,39 @@ TEST_F (TouchFixture, CheckIfDipslayIsReleased)
     pressedCoordinates.X = ONE_HUNDRED;
     pressedCoordinates.Y = ONE_HUNDRED;
 
-    EXPECT_CALL (TouchHw, isTouched ())         .Times          (Config.Time.PressedMax + ONE + Config.Time.ReleasedMax)
+    EXPECT_CALL (oTouchHw, isTouched ())        .Times          (Config.Time.PressedMax + ONE + Config.Time.ReleasedMax)
                                                 .WillRepeatedly (Return (true));
 
     Sequence seq;
     for (uint8_t pressedNum = ZERO; pressedNum < Config.Time.PressedMax + ONE; pressedNum++)
     {
-        EXPECT_CALL (TouchHw, getCoordinates ()).InSequence (seq)
-                                                .WillOnce   (Return (pressedCoordinates));
+        EXPECT_CALL (oTouchHw, getCoordinates ()).InSequence (seq)
+                                                 .WillOnce   (Return (pressedCoordinates));
     }
 
     for (uint8_t releasedNum = ZERO; releasedNum < Config.Time.ReleasedMax; releasedNum++)
     {
-        EXPECT_CALL (TouchHw, getCoordinates ()).InSequence (seq)
-                                                .WillOnce   (Return (increaseCoordinates (pressedCoordinates, Config.Histeresis)));
+        EXPECT_CALL (oTouchHw, getCoordinates ()).InSequence (seq)
+                                                 .WillOnce   (Return (increaseCoordinates (pressedCoordinates, Config.Histeresis)));
     }
 
-    Touch<decltype(TouchHw)>::EState state = Touch<decltype(TouchHw)>::EState::eUntouched;
+    Touch<decltype(oTouchHw)>::EState state = Touch<decltype(oTouchHw)>::EState::eUntouched;
     for (uint8_t eventNum = ZERO; eventNum < Config.Time.PressedMax + ONE; eventNum++)
     {
-        ASSERT_EQ (Touch<decltype(TouchHw)>::EState::eUntouched, state);
-        state = TouchHw.Event ();
+        ASSERT_EQ (Touch<decltype(oTouchHw)>::EState::eUntouched, state);
+        state = oTouchHw.Event ();
     }
 
-    ASSERT_EQ (Touch<decltype(TouchHw)>::EState::ePressed, state);
+    ASSERT_EQ (Touch<decltype(oTouchHw)>::EState::ePressed, state);
 
-    state = Touch<decltype(TouchHw)>::EState::eUntouched;
+    state = Touch<decltype(oTouchHw)>::EState::eUntouched;
     for (uint8_t eventNum = ZERO; eventNum < Config.Time.ReleasedMax; eventNum++)
     {
-        ASSERT_EQ (Touch<decltype(TouchHw)>::EState::eUntouched, state);
-        state = TouchHw.Event ();
+        ASSERT_EQ (Touch<decltype(oTouchHw)>::EState::eUntouched, state);
+        state = oTouchHw.Event ();
     }
 
-    ASSERT_EQ (Touch<decltype(TouchHw)>::EState::eReleased, state);
+    ASSERT_EQ (Touch<decltype(oTouchHw)>::EState::eReleased, state);
 }
 
 TEST_F (TouchFixture, CheckIfDipslayIsUntouchedAfterTooShortTimePressed)
@@ -76,14 +76,14 @@ TEST_F (TouchFixture, CheckIfDipslayIsUntouchedAfterTooShortTimePressed)
     pressedCoordinates.X = TWENTY;
     pressedCoordinates.Y = TWENTY;
 
-    EXPECT_CALL (TouchHw, isTouched      ()).WillRepeatedly (Return (true));
-    EXPECT_CALL (TouchHw, getCoordinates ()).WillRepeatedly (Return (pressedCoordinates));
+    EXPECT_CALL (oTouchHw, isTouched      ()).WillRepeatedly (Return (true));
+    EXPECT_CALL (oTouchHw, getCoordinates ()).WillRepeatedly (Return (pressedCoordinates));
 
-    Touch<decltype(TouchHw)>::EState state = Touch<decltype(TouchHw)>::EState::eUntouched;
+    Touch<decltype(oTouchHw)>::EState state = Touch<decltype(oTouchHw)>::EState::eUntouched;
     for (uint8_t eventNum = ZERO; eventNum < Config.Time.PressedMax - ONE; eventNum++)
     {
-        state = TouchHw.Event ();
-        ASSERT_EQ (Touch<decltype(TouchHw)>::EState::eUntouched, state);
+        state = oTouchHw.Event ();
+        ASSERT_EQ (Touch<decltype(oTouchHw)>::EState::eUntouched, state);
     }
 }
 
@@ -95,17 +95,17 @@ TEST_F (TouchFixture, CheckIfDipslayIsPressed)
     pressedCoordinates.X = TWENTY;
     pressedCoordinates.Y = TWENTY;
 
-    EXPECT_CALL (TouchHw, isTouched      ()).WillRepeatedly (Return (true));
-    EXPECT_CALL (TouchHw, getCoordinates ()).WillRepeatedly (Return (pressedCoordinates));
+    EXPECT_CALL (oTouchHw, isTouched      ()).WillRepeatedly (Return (true));
+    EXPECT_CALL (oTouchHw, getCoordinates ()).WillRepeatedly (Return (pressedCoordinates));
 
-    Touch<decltype(TouchHw)>::EState state = Touch<decltype(TouchHw)>::EState::eUntouched;
+    Touch<decltype(oTouchHw)>::EState state = Touch<decltype(oTouchHw)>::EState::eUntouched;
     for (uint8_t eventNum = ZERO; eventNum < Config.Time.PressedMax + ONE; eventNum++)
     {
-        ASSERT_EQ (Touch<decltype(TouchHw)>::EState::eUntouched, state);
-        state = TouchHw.Event ();
+        ASSERT_EQ (Touch<decltype(oTouchHw)>::EState::eUntouched, state);
+        state = oTouchHw.Event ();
     }
 
-    ASSERT_EQ (Touch<decltype(TouchHw)>::EState::ePressed, state);
+    ASSERT_EQ (Touch<decltype(oTouchHw)>::EState::ePressed, state);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

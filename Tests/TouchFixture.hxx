@@ -23,10 +23,10 @@ class TouchFixture : public ::testing::Test
                                                       TWO,
                                                       2.68
                                                     };
-        SpiHw                        SpiHw;
-        TouchHw                      TouchHw;
+        class SpiHw                  SpiHw;
+        class TouchHw                oTouchHw;
 
-        TouchFixture  () : TouchHw (Coefficients, Config, SpiHw) { }
+        TouchFixture  () : oTouchHw (Coefficients, Config, SpiHw) { }
         void TestBody () override { }
         void SetUp    () override { }
         void TearDown () override { }
