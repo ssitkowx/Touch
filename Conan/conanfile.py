@@ -21,11 +21,11 @@ class Conan(ConanFile):
     requires        = ["gtest/cci.20210126"]
     packagesPath    = "/home/sylwester/.conan/data"
     downloadsPath   = "/home/sylwester/.conan/download"
-    packages        = ["Spi/1.0@ssitkowx/stable",
-                       "Utils/1.0@ssitkowx/stable",
-                       "Bitmap/1.0@ssitkowx/stable",
-                       "Logger/1.0@ssitkowx/stable", 
-                       "LoggerHw/1.0@ssitkowx/stable"]
+    packages        = ["Spi/1.1@ssitkowx/stable",
+                       "Utils/1.1@ssitkowx/stable",
+                       "Bitmap/1.1@ssitkowx/stable",
+                       "Logger/1.1@ssitkowx/stable", 
+                       "LoggerHw/1.1@ssitkowx/stable"]
 
     def source (self):   
         conanPackages.install (self, self.downloadsPath, self.repoUrl, self.packages)
