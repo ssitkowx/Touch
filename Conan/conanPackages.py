@@ -60,3 +60,4 @@ class conanPackages:
             conanPackages.__createFolderDownload     (self, v_downloadsPath)
             conanPackages.__cloneRepo                (self, packageComponent ['name'], packageComponent ['version'], v_downloadsPath, v_repoUrl)
             conanPackages.__createPackage            (self, packageComponent ['user'], packageComponent ['channel'])
+

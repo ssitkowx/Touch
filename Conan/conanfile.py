@@ -10,7 +10,7 @@ class Conan(ConanFile):
     license         = "freeware"
     repoUrl         = "https://github.com/ssitkowx"
     url             = repoUrl + '/' + name + '.git'
-    description     = "General class for touch"
+    description     = "Template for projects and packages"
     settings        = "os", "compiler", "build_type", "arch"
     options         = {"shared": [True, False]}
     default_options = "shared=False"
