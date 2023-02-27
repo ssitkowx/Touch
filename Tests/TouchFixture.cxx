@@ -2,6 +2,7 @@
 //////////////////////////////// INCLUDES /////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
+#include "TouchHw.h"
 #include "LoggerHw.h"
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
@@ -12,6 +13,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 using ::testing::Return;
+using ::testing::Invoke;
 using ::testing::Sequence;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -25,52 +27,51 @@ Bitmap::Coordinates increaseCoordinates (Bitmap::Coordinates & v_coordinates, ui
     return v_coordinates;
 }
 
-TEST_F (TouchFixture, CheckIfDipslayIsReleased)
+TEST_F (TouchFixture, CheckIfTouchIsReleased)
 {
-    LOGW (MODULE, "CheckIfDipslayIsReleased");
+    LOGW (MODULE, "CheckIfTouchIsReleased");
 
     Bitmap::Coordinates pressedCoordinates;
     pressedCoordinates.X = ONE_HUNDRED;
     pressedCoordinates.Y = ONE_HUNDRED;
 
-    EXPECT_CALL (oTouchHw, isTouched ())        .Times          (Config.Time.PressedMax + ONE + Config.Time.ReleasedMax)
-                                                .WillRepeatedly (Return (true));
+    ON_CALL (oTouchHw, isTouched ()).WillByDefault (Invoke (&oTouchHw, &TouchHw::IsTouched));
 
     Sequence seq;
-    for (uint8_t pressedNum = ZERO; pressedNum < Config.Time.PressedMax + ONE; pressedNum++)
+    for (uint8_t pressedNum = ZERO; pressedNum < TouchFixture::TimeMax.Pressed + ONE; pressedNum++)
     {
         EXPECT_CALL (oTouchHw, getCoordinates ()).InSequence (seq)
                                                  .WillOnce   (Return (pressedCoordinates));
     }
 
-    for (uint8_t releasedNum = ZERO; releasedNum < Config.Time.ReleasedMax; releasedNum++)
+    for (uint8_t releasedNum = ZERO; releasedNum < TouchFixture::TimeMax.Released; releasedNum++)
     {
         EXPECT_CALL (oTouchHw, getCoordinates ()).InSequence (seq)
-                                                 .WillOnce   (Return (increaseCoordinates (pressedCoordinates, Config.Histeresis)));
+                                                 .WillOnce   (Return (increaseCoordinates (pressedCoordinates, Histeresis)));
     }
 
-    Touch<decltype(oTouchHw)>::EState state = Touch<decltype(oTouchHw)>::EState::eUntouched;
-    for (uint8_t eventNum = ZERO; eventNum < Config.Time.PressedMax + ONE; eventNum++)
+    ButtonSpace::EState state = ButtonSpace::EState::eUntouched;
+    for (uint8_t eventNum = ZERO; eventNum < TouchFixture::TimeMax.Pressed + ONE; eventNum++)
     {
-        ASSERT_EQ (Touch<decltype(oTouchHw)>::EState::eUntouched, state);
+        EXPECT_EQ (ButtonSpace::EState::eUntouched, state);
         state = oTouchHw.Event ();
     }
 
-    ASSERT_EQ (Touch<decltype(oTouchHw)>::EState::ePressed, state);
+    ASSERT_EQ (ButtonSpace::EState::ePressed, state);
 
-    state = Touch<decltype(oTouchHw)>::EState::eUntouched;
-    for (uint8_t eventNum = ZERO; eventNum < Config.Time.ReleasedMax; eventNum++)
+    state = ButtonSpace::EState::eUntouched;
+    for (uint8_t eventNum = ZERO; eventNum < TouchFixture::TimeMax.Released; eventNum++)
     {
-        ASSERT_EQ (Touch<decltype(oTouchHw)>::EState::eUntouched, state);
+        EXPECT_EQ (ButtonSpace::EState::eUntouched, state);
         state = oTouchHw.Event ();
     }
 
-    ASSERT_EQ (Touch<decltype(oTouchHw)>::EState::eReleased, state);
+    ASSERT_EQ (ButtonSpace::EState::eReleased, state);
 }
 
-TEST_F (TouchFixture, CheckIfDipslayIsUntouchedAfterTooShortTimePressed)
+TEST_F (TouchFixture, CheckIfTouchIsPressed)
 {
-    LOGW (MODULE, "CheckIfDipslayIsUntouchedAfterTooShortTimePressed");
+    LOGW (MODULE, "CheckIfTouchIsPressed");
 
     Bitmap::Coordinates pressedCoordinates;
     pressedCoordinates.X = TWENTY;
@@ -79,33 +80,14 @@ TEST_F (TouchFixture, CheckIfDipslayIsUntouchedAfterTooShortTimePressed)
     EXPECT_CALL (oTouchHw, isTouched      ()).WillRepeatedly (Return (true));
     EXPECT_CALL (oTouchHw, getCoordinates ()).WillRepeatedly (Return (pressedCoordinates));
 
-    Touch<decltype(oTouchHw)>::EState state = Touch<decltype(oTouchHw)>::EState::eUntouched;
-    for (uint8_t eventNum = ZERO; eventNum < Config.Time.PressedMax - ONE; eventNum++)
+    ButtonSpace::EState state = ButtonSpace::EState::eUntouched;
+    for (uint8_t eventNum = ZERO; eventNum < TouchFixture::TimeMax.Pressed; eventNum++)
     {
-        state = oTouchHw.Event ();
-        ASSERT_EQ (Touch<decltype(oTouchHw)>::EState::eUntouched, state);
-    }
-}
-
-TEST_F (TouchFixture, CheckIfDipslayIsPressed)
-{
-    LOGW (MODULE, "CheckIfDipslayIsTouched");
-
-    Bitmap::Coordinates pressedCoordinates;
-    pressedCoordinates.X = TWENTY;
-    pressedCoordinates.Y = TWENTY;
-
-    EXPECT_CALL (oTouchHw, isTouched      ()).WillRepeatedly (Return (true));
-    EXPECT_CALL (oTouchHw, getCoordinates ()).WillRepeatedly (Return (pressedCoordinates));
-
-    Touch<decltype(oTouchHw)>::EState state = Touch<decltype(oTouchHw)>::EState::eUntouched;
-    for (uint8_t eventNum = ZERO; eventNum < Config.Time.PressedMax + ONE; eventNum++)
-    {
-        ASSERT_EQ (Touch<decltype(oTouchHw)>::EState::eUntouched, state);
+        EXPECT_EQ (ButtonSpace::EState::eUntouched, state);
         state = oTouchHw.Event ();
     }
 
-    ASSERT_EQ (Touch<decltype(oTouchHw)>::EState::ePressed, state);
+    ASSERT_EQ (ButtonSpace::EState::ePressed, state);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

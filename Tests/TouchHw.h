@@ -22,21 +22,23 @@ class TouchHw final : public Touch<TouchHw>
             double  Length;
         };
 
-        explicit TouchHw (const Coefficients v_coefficient, 
-                          const Touch<TouchHw>::Config v_touchConfig,
-                          SpiHw & v_spiHw) : Touch<TouchHw> (v_touchConfig),
-                                             coefficient    (v_coefficient),
-                                             spiHw          (v_spiHw)
+        explicit TouchHw (const Coefficients         vCoefficient, 
+                          const ButtonSpace::TimeMax vTimeMax,
+                          const uint8_t              vHysteresis,
+                          SpiHw & vSpiHw) : Touch<TouchHw> (vTimeMax, vHysteresis),
+                                             coefficient   (vCoefficient),
+                                             spiHw         (vSpiHw)
         { }
        ~TouchHw () = default;
 
-        Touch::Event;
-        Touch::coordinates;
+        using Touch::Event;
+        using Touch::coordinates;
 
-        MOCK_METHOD0 (Process       , void                (void));
         MOCK_METHOD0 (isTouched     , bool                (void));
         MOCK_METHOD0 (getCoordinates, Bitmap::Coordinates (void));
         MOCK_METHOD1 (getPos        , uint16_t            (uint8_t));
+
+        bool IsTouched (void) { return Touch<TouchHw>::isTouched (); }
 
     private:
         const Coefficients coefficient;

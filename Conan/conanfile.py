@@ -23,6 +23,7 @@ class Conan(ConanFile):
     downloadsPath   = "/home/sylwester/.conan/download"
     packages        = ["Spi/1.1@ssitkowx/stable",
                        "Utils/1.1@ssitkowx/stable",
+                       "Button/1.0@ssitkowx/stable",
                        "Bitmap/1.1@ssitkowx/stable",
                        "Logger/1.1@ssitkowx/stable", 
                        "LoggerHw/1.1@ssitkowx/stable"]
