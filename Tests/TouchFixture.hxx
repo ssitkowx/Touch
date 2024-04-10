@@ -17,8 +17,9 @@ class TouchFixture : public ::testing::Test
     public:
         static constexpr char *           MODULE       = (char *)"TouchFixture";
         const uint8_t                     Histeresis   = TWO;
-        const struct ButtonSpace::TimeMax TimeMax      = { FOUR,  
-                                                           EIGHT
+        const struct ButtonSpace::Timeout Timeout      = { EIGHT,  
+                                                           FOUR,
+                                                           FOUR
                                                          };
         const TouchHw::Coefficients       Coefficients = { ONE_HUNDRED_TWENTY_EIGHT,
                                                            TWO,
@@ -27,7 +28,7 @@ class TouchFixture : public ::testing::Test
         class SpiHw                       SpiHw;
         class TouchHw                     oTouchHw;
 
-        TouchFixture  () : oTouchHw (Coefficients, TimeMax, Histeresis, SpiHw) { }
+        TouchFixture  () : oTouchHw (Coefficients, Timeout, Histeresis, SpiHw) { }
         
         void TestBody () override { }
         void SetUp    () override { }

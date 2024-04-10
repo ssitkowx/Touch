@@ -23,15 +23,14 @@ class TouchHw final : public Touch<TouchHw>
         };
 
         explicit TouchHw (const Coefficients         vCoefficient, 
-                          const ButtonSpace::TimeMax vTimeMax,
+                          const ButtonSpace::Timeout Timeout,
                           const uint8_t              vHysteresis,
-                          SpiHw & vSpiHw) : Touch<TouchHw> (vTimeMax, vHysteresis),
+                          SpiHw & vSpiHw) : Touch<TouchHw> (Timeout, vHysteresis),
                                              coefficient   (vCoefficient),
                                              spiHw         (vSpiHw)
         { }
        ~TouchHw () = default;
 
-        using Touch::Event;
         using Touch::coordinates;
 
         MOCK_METHOD0 (isTouched     , bool                (void));

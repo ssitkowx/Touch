@@ -19,13 +19,15 @@ class Touch : public Button <DERIVED_TYPE>
     DERIVED_TYPE & derivedType = static_cast <DERIVED_TYPE &>(*this);
 
     public:
-        explicit Touch (const ButtonSpace::TimeMax vTimeMax, const uint8_t vHisteresis) : Button <DERIVED_TYPE>(vTimeMax), histeresis (vHisteresis) { }
+        explicit Touch (const ButtonSpace::Timeout vTimeout, const uint8_t vHisteresis) : Button <DERIVED_TYPE>(vTimeout), 
+                                                                                          histeresis (vHisteresis) { }
 
     private:
-        const uint8_t histeresis;
+        const uint8_t       histeresis;
         Bitmap::Coordinates coordinates = { ZERO, ZERO };
 
         ~Touch () = default;
+        
         bool isTouched (void)
         {
             bool                state          = false;
