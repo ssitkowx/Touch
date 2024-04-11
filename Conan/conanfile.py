@@ -22,8 +22,8 @@ class Conan(ConanFile):
     exports         = "*"
     requires        = ["gtest/cci.20210126"]
     downloadPath    = "/home/sylwester/.conan2/download"
-    repoPath        = downloadPath + '/Repos'
-    packagePath     = downloadPath + '/Packages'
+    repoPath        = downloadPath + '/repos'
+    packagePath     = downloadPath + '/packages'
     packages        = ["spi/1.2", "utils/1.2", "button/1.2", "bitmap/1.2", "logger/1.2", "loggerhw/1.2"]
 
     def layout (self):
