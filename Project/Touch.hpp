@@ -41,8 +41,8 @@ class Touch : public Button <DERIVED_TYPE>
             return state;
         }
         
-        uint16_t            getPos         (uint8_t v_cmd) { return derivedType.getPos (v_cmd); }
-        Bitmap::Coordinates getCoordinates (void)          { return derivedType.getCoordinates (); }      
+        uint16_t            getPos         (const uint8_t vCmd) { return derivedType.getPos (vCmd); }
+        Bitmap::Coordinates getCoordinates (void)               { return derivedType.getCoordinates (); }      
 };
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -20,11 +20,11 @@ using ::testing::Sequence;
 //////////////////////////////// FUNCTIONS ////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-Bitmap::Coordinates increaseCoordinates (Bitmap::Coordinates & v_coordinates, uint8_t v_histeresis)
+Bitmap::Coordinates increaseCoordinates (Bitmap::Coordinates & vCoordinates, const uint8_t vHisteresis)
 {
-    v_coordinates.X = v_coordinates.X + v_histeresis + ONE;
-    v_coordinates.Y = v_coordinates.Y + v_histeresis + ONE;
-    return v_coordinates;
+    vCoordinates.X = vCoordinates.X + vHisteresis + ONE;
+    vCoordinates.Y = vCoordinates.Y + vHisteresis + ONE;
+    return vCoordinates;
 }
 
 TEST_F (TouchFixture, CheckIfTouchIsReleased)
