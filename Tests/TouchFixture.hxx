@@ -16,19 +16,18 @@ class TouchFixture : public ::testing::Test
 {
     public:
         static constexpr char *           MODULE       = (char *)"TouchFixture";
-        const uint8_t                     Histeresis   = TWO;
+        const uint8_t                     Histeresis   = FIVE;
         const struct ButtonSpace::Timeout Timeout      = { EIGHT,  
                                                            FOUR,
                                                            FOUR
                                                          };
-        const TouchHw::Coefficients       Coefficients = { ONE_HUNDRED_TWENTY_EIGHT,
-                                                           TWO,
-                                                           2.68
+        const TouchHw::Coefficients       Coefficients = { 1,
+                                                           1
                                                          };
-        class SpiHw                       SpiHw;
         class TouchHw                     oTouchHw;
+        class SpiTouchHw                  SpiTouchHw;
 
-        TouchFixture  () : oTouchHw (Coefficients, Timeout, Histeresis, SpiHw) { }
+        TouchFixture  () : oTouchHw (Timeout, Histeresis, Coefficients, SpiTouchHw) { }
         
         void TestBody () override { }
         void SetUp    () override { }

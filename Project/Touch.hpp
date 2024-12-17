@@ -19,30 +19,28 @@ class Touch : public Button <DERIVED_TYPE>
     DERIVED_TYPE & derivedType = static_cast <DERIVED_TYPE &>(*this);
 
     public:
-        explicit Touch (const ButtonSpace::Timeout vTimeout, const uint8_t vHisteresis) : Button <DERIVED_TYPE>(vTimeout), 
+        Bitmap::Coordinates Coordinates;
+
+        explicit Touch (const ButtonSpace::Timeout vTimeout, const uint8_t vHisteresis) : Button <DERIVED_TYPE>(vTimeout),
                                                                                           histeresis (vHisteresis) { }
-
-    private:
-        const uint8_t       histeresis;
-        Bitmap::Coordinates coordinates = { ZERO, ZERO };
-
-        ~Touch () = default;
-        
-        bool isTouched (void)
+        bool IsTouched (void)
         {
-            bool                state          = false;
-            Bitmap::Coordinates newCoordinates = getCoordinates ();
+            bool state  = false;
+            Coordinates = getCoordinates ();
             
-            if (((coordinates.X - histeresis) <= newCoordinates.X) && (newCoordinates.X <= (coordinates.X + histeresis)) &&
-                ((coordinates.Y - histeresis) <= newCoordinates.Y) && (newCoordinates.Y <= (coordinates.Y + histeresis))) { state = true;  }
-            else                                                                                                          { state = false; }
+            if ((Coordinates.X >= histeresis) && (Coordinates.Y >= histeresis)) { state = true;  }
+            else                                                                { state = false; }
 
-            coordinates = newCoordinates;
             return state;
         }
-        
+
+    private:
+        const uint8_t histeresis;
+
+        ~Touch () = default;
+
         uint16_t            getPos         (const uint8_t vCmd) { return derivedType.getPos (vCmd); }
-        Bitmap::Coordinates getCoordinates (void)               { return derivedType.getCoordinates (); }      
+        Bitmap::Coordinates getCoordinates (void)               { return derivedType.getCoordinates (); }
 };
 
 ///////////////////////////////////////////////////////////////////////////////

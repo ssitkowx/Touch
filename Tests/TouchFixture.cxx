@@ -20,14 +20,7 @@ using ::testing::Sequence;
 //////////////////////////////// FUNCTIONS ////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-Bitmap::Coordinates increaseCoordinates (Bitmap::Coordinates & vCoordinates, const uint8_t vHisteresis)
-{
-    vCoordinates.X = vCoordinates.X + vHisteresis + ONE;
-    vCoordinates.Y = vCoordinates.Y + vHisteresis + ONE;
-    return vCoordinates;
-}
-
-TEST_F (TouchFixture, CheckIfTouchIsReleased)
+TEST_F (TouchFixture, CheckIfTouchIsPressedAndReleased)
 {
     LOGW (MODULE, "CheckIfTouchIsReleased");
 
@@ -35,23 +28,23 @@ TEST_F (TouchFixture, CheckIfTouchIsReleased)
     pressedCoordinates.X = ONE_HUNDRED;
     pressedCoordinates.Y = ONE_HUNDRED;
 
-    ON_CALL (oTouchHw, isTouched ()).WillByDefault (Invoke (&oTouchHw, &TouchHw::IsTouched));
-
     Sequence seq;
-    for (uint8_t pressedNum = ZERO; pressedNum < TouchFixture::Timeout.Pressed + ONE; pressedNum++)
+    for (uint8_t pressedNum = ZERO; pressedNum < TouchFixture::Timeout.Pressed; pressedNum++)
     {
         EXPECT_CALL (oTouchHw, getCoordinates ()).InSequence (seq)
                                                  .WillOnce   (Return (pressedCoordinates));
     }
 
+    pressedCoordinates.X = ZERO;
+    pressedCoordinates.Y = ZERO;
     for (uint8_t releasedNum = ZERO; releasedNum < TouchFixture::Timeout.Released; releasedNum++)
     {
         EXPECT_CALL (oTouchHw, getCoordinates ()).InSequence (seq)
-                                                 .WillOnce   (Return (increaseCoordinates (pressedCoordinates, Histeresis)));
+                                                 .WillOnce   (Return (pressedCoordinates));
     }
 
     oTouchHw.Event = ButtonSpace::EEvent::Untouched;
-    for (uint8_t eventNum = ZERO; eventNum < TouchFixture::Timeout.Pressed + ONE; eventNum++)
+    for (uint8_t eventNum = ZERO; eventNum < TouchFixture::Timeout.Pressed; eventNum++)
     {
         EXPECT_EQ (ButtonSpace::EEvent::Untouched, oTouchHw.Event);
         oTouchHw.Process ();
@@ -69,27 +62,49 @@ TEST_F (TouchFixture, CheckIfTouchIsReleased)
     ASSERT_EQ (ButtonSpace::EEvent::Released, oTouchHw.Event);
 }
 
-TEST_F (TouchFixture, CheckIfTouchIsPressed)
+TEST_F (TouchFixture, CheckIfTouchIsHoldAndReleased)
 {
-    LOGW (MODULE, "CheckIfTouchIsPressed");
+    LOGW (MODULE, "CheckIfTouchIsHoldAndReleased");
 
-    Bitmap::Coordinates pressedCoordinates;
-    pressedCoordinates.X = TWENTY;
-    pressedCoordinates.Y = TWENTY;
+    Bitmap::Coordinates holdCoordinates;
+    holdCoordinates.X = ONE_HUNDRED;
+    holdCoordinates.Y = ONE_HUNDRED;
 
-    EXPECT_CALL (oTouchHw, isTouched      ()).WillRepeatedly (Return (true));
-    EXPECT_CALL (oTouchHw, getCoordinates ()).WillRepeatedly (Return (pressedCoordinates));
+    Sequence seq;
+    for (uint8_t holdNum = ZERO; holdNum < TouchFixture::Timeout.Hold; holdNum++)
+    {
+        EXPECT_CALL (oTouchHw, getCoordinates ()).InSequence (seq)
+                                                 .WillOnce   (Return (holdCoordinates));
+    }
+
+    holdCoordinates.X = ZERO;
+    holdCoordinates.Y = ZERO;
+    for (uint8_t releasedNum = ZERO; releasedNum < TouchFixture::Timeout.Released; releasedNum++)
+    {
+        EXPECT_CALL (oTouchHw, getCoordinates ()).InSequence (seq)
+                                                 .WillOnce   (Return (holdCoordinates));
+    }
 
     oTouchHw.Event = ButtonSpace::EEvent::Untouched;
-    for (uint8_t eventNum = ZERO; eventNum < TouchFixture::Timeout.Pressed + ONE; eventNum++)
+    for (uint8_t eventNum = ZERO; eventNum < TouchFixture::Timeout.Hold; eventNum++)
+    {
+        if (eventNum == TouchFixture::Timeout.Pressed) { EXPECT_EQ (ButtonSpace::EEvent::Pressed  , oTouchHw.Event); }
+        else                                           { EXPECT_EQ (ButtonSpace::EEvent::Untouched, oTouchHw.Event); }
+
+        oTouchHw.Process ();
+    }
+
+    ASSERT_EQ (ButtonSpace::EEvent::Hold, oTouchHw.Event);
+
+    oTouchHw.Event = ButtonSpace::EEvent::Untouched;
+    for (uint8_t eventNum = ZERO; eventNum < TouchFixture::Timeout.Released; eventNum++)
     {
         EXPECT_EQ (ButtonSpace::EEvent::Untouched, oTouchHw.Event);
         oTouchHw.Process ();
     }
 
-    ASSERT_EQ (ButtonSpace::EEvent::Pressed, oTouchHw.Event);
+    ASSERT_EQ (ButtonSpace::EEvent::Released, oTouchHw.Event);
 }
-
 ///////////////////////////////////////////////////////////////////////////////
 /////////////////////////////// END OF FILE ///////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
