@@ -4,7 +4,6 @@
 //////////////////////////////// INCLUDES /////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "Utils.hpp"
 #include "Touch.hpp"
 #include "TouchHw.hpp"
 
@@ -15,11 +14,11 @@
 class TouchFixture : public ::testing::Test
 {
     public:
-        static constexpr char *           MODULE       = (char *)"TouchFixture";
-        const uint8_t                     Histeresis   = FIVE;
-        const struct ButtonSpace::Timeout Timeout      = { EIGHT,  
-                                                           FOUR,
-                                                           FOUR
+        static constexpr char *           Module       = (char *)"TouchFixture";
+        const uint8_t                     Histeresis   = 5;
+        const struct ButtonSpace::Timeout Timeout      = { 8,
+                                                           4,
+                                                           4
                                                          };
         const TouchHw::Coefficients       Coefficients = { 1,
                                                            1
