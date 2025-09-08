@@ -33,6 +33,7 @@
 /build
 /Build
 /.vscode
+/CMakeUserPresets.json
 Conan/conan.lock
 Conan/conanbuildinfo.cmake
 Conan/conanbuildinfo.txt
